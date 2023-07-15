@@ -46,14 +46,18 @@ class CaptionGenerator:
         self.config = config
         self.markdown_mode = False
 
-    def _make_text_image(self, size: tuple[int, int], margin: int, text: str) -> QImage:
+    def _make_text_image(self, size: tuple[int, int]) -> QImage:
         width, height = size
 
         rect_left_offset = (
-            0 if self.config.direction in (Direction.UP, Direction.DOWN) else margin
+            0
+            if self.config.direction in (Direction.UP, Direction.DOWN)
+            else self.config.margin
         )
         rect_top_offset = (
-            0 if self.config.direction in (Direction.LEFT, Direction.RIGHT) else margin
+            0
+            if self.config.direction in (Direction.LEFT, Direction.RIGHT)
+            else self.config.margin
         )
         rect = QRect(
             rect_left_offset,
@@ -63,15 +67,13 @@ class CaptionGenerator:
         )
 
         if self.config.markdown_mode:
-            img = self._make_markdown_text_image(size, rect, text)
+            img = self._make_markdown_text_image(size, rect)
         else:
-            img = self._make_plain_text_image(size, rect, text)
+            img = self._make_plain_text_image(size, rect)
 
         return utils.qimage_to_pil(img)
 
-    def _make_plain_text_image(
-        self, size: tuple[int, int], rect: QRect, text: str
-    ) -> QImage:
+    def _make_plain_text_image(self, size: tuple[int, int], rect: QRect) -> QImage:
         width, height = size
 
         # Create a new image
@@ -88,14 +90,14 @@ class CaptionGenerator:
         painter.drawText(
             rect,
             Qt.TextFlag.TextWordWrap,
-            text,
+            self.config.caption,
         )
         painter.end()
 
         return image
 
     def _make_markdown_text_image(
-        self, size: tuple[int, int], rect: QRect, text: str
+        self, size: tuple[int, int], rect: QRect
     ) -> Image.Image:
         width, height = size
 
@@ -119,7 +121,9 @@ class CaptionGenerator:
             f"body {{color: {self.config.text_color.name(QColor.NameFormat.HexRgb)};}}"
         )
 
-        doc.setMarkdown(text, QTextDocument.MarkdownFeature.MarkdownDialectGitHub)
+        doc.setMarkdown(
+            self.config.caption, QTextDocument.MarkdownFeature.MarkdownDialectGitHub
+        )
         # This is needed, otherwise the style isn't applied
         doc.setHtml(doc.toHtml())
         # This is needed for the margin
@@ -130,7 +134,6 @@ class CaptionGenerator:
 
     def make_image(self) -> Image.Image:
         size = self.config.border_size
-        margin = self.config.margin
         if size == 0:
             return self.config.base_image
 
@@ -165,8 +168,6 @@ class CaptionGenerator:
 
         text_img = self._make_text_image(
             size=text_img_size,
-            margin=margin,
-            text=self.config.caption,
         )
         text_x_offset = (
             im.size[0] - size if self.config.direction == Direction.RIGHT else 0
