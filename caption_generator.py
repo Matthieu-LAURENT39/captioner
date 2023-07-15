@@ -1,15 +1,9 @@
+from copy import copy
 from dataclasses import dataclass
 
 from PIL import Image
 from PySide6.QtCore import QRect, Qt
-from PySide6.QtGui import (
-    QColor,
-    QFont,
-    QImage,
-    QPainter,
-    QTextDocument,
-    QTextOption,
-)
+from PySide6.QtGui import QColor, QFont, QImage, QPainter, QTextDocument, QTextOption
 
 import utils
 from enums import Direction
@@ -17,24 +11,37 @@ from enums import Direction
 
 @dataclass
 class CaptionGeneratorConfig:
-    base_image: Image.Image = None
+    base_image: Image.Image
 
-    direction: Direction = Direction.RIGHT
-    border_size: int = 0
-    margin: int = 0
+    direction: Direction
+    border_size: int
+    margin: int
 
-    caption: str = ""
-    font: QFont = QFont()
-    markdown_mode = False
+    caption: str
+    font: QFont
+    markdown_mode: bool
 
-    background_color: QColor = QColor(0, 0, 0)
-    text_color: QColor = QColor(255, 255, 255)
+    background_color: QColor
+    text_color: QColor
+
+
+DEFAULT_CONFIG = CaptionGeneratorConfig(
+    base_image=None,
+    direction=Direction.RIGHT,
+    border_size=0,
+    margin=0,
+    caption="",
+    font=QFont(),
+    markdown_mode=False,
+    background_color=QColor(0, 0, 0),
+    text_color=QColor(255, 255, 255),
+)
 
 
 class CaptionGenerator:
     def __init__(self, config: CaptionGeneratorConfig = None) -> None:
         if config is None:
-            config = CaptionGeneratorConfig()
+            config = copy(DEFAULT_CONFIG)
 
         self.config = config
         self.markdown_mode = False
