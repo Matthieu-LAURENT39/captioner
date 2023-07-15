@@ -4,9 +4,16 @@ from io import BytesIO
 
 from PIL import Image, UnidentifiedImageError
 from PySide6.QtCore import QBuffer, QRect, Qt
-from PySide6.QtGui import QColor, QFont, QImage, QPainter, QPixmap
-from PySide6.QtWidgets import (QApplication, QFileDialog, QMainWindow,
-                               QMessageBox)
+from PySide6.QtGui import (
+    QColor,
+    QFont,
+    QImage,
+    QPainter,
+    QPixmap,
+    QTextDocument,
+    QTextOption,
+)
+from PySide6.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
 
 import utils
 from enums import Direction
@@ -39,6 +46,7 @@ class MainWindow(QMainWindow):
             self.ui.fontSizeSpinBox.valueChanged,
             self.ui.textColorPicker.colorChanged,
             self.ui.backgroundColorPicker.colorChanged,
+            self.ui.markdownModeCheckBox.stateChanged,
         ):
             signal.connect(self.recompute_image)
 
@@ -58,13 +66,9 @@ class MainWindow(QMainWindow):
         thumb = image.copy()
         thumb.thumbnail((700, 350))
 
-        # qtimg = ImageQt(image)
-        # self.ui.imageLabel.setPixmap(qtimg)
-
         # ImageQt doesn't work, so we instead pass via IO
         data = thumb.tobytes("raw", "BGRA")
         q_image = QImage(data, thumb.width, thumb.height, QImage.Format.Format_ARGB32)
-        # q_image = QImage(data, im.size[0], im.size[1], QImage.Format.Format_RGBA8888)
 
         pix = QPixmap.fromImage(q_image)
         self.ui.imageLabel.setPixmap(pix)
@@ -86,14 +90,8 @@ class MainWindow(QMainWindow):
     #     document.setHtml(html_text)
     #     return document
 
-    def _make_text_image(
-        self, size: tuple[int, int], margin: int, text: str
-    ) -> Image.Image:
+    def _make_text_image(self, size: tuple[int, int], margin: int, text: str) -> QImage:
         width, height = size
-
-        # Create a new image
-        image = QImage(width, height, QImage.Format.Format_ARGB32)
-        image.fill(self.ui.backgroundColorPicker.selectedColor)
 
         rect_left_offset = (
             0 if self.direction in (Direction.UP, Direction.DOWN) else margin
@@ -107,6 +105,28 @@ class MainWindow(QMainWindow):
             width - rect_left_offset,
             height - rect_top_offset,
         )
+
+        if self.ui.markdownModeCheckBox.isChecked():
+            img = self._make_markdown_text_image(size, rect, text)
+        else:
+            img = self._make_plain_text_image(size, rect, text)
+
+        # Convert QImage to PIL image
+        buffer = QBuffer()
+        buffer.open(QBuffer.OpenModeFlag.ReadWrite)
+        img.save(buffer, "PNG", 100)
+        pil_im = Image.open(BytesIO(buffer.data()))
+        return pil_im
+
+    def _make_plain_text_image(
+        self, size: tuple[int, int], rect: QRect, text: str
+    ) -> QImage:
+        width, height = size
+
+        # Create a new image
+        image = QImage(width, height, QImage.Format.Format_ARGB32)
+        image.fill(self.ui.backgroundColorPicker.selectedColor)
+
         painter = QPainter(image)
 
         # Set the font properties
@@ -119,35 +139,43 @@ class MainWindow(QMainWindow):
             Qt.TextFlag.TextWordWrap,
             text,
         )
-
-        #! WIP Markdown text editing
-        # doc = QTextDocument()
-        # doc.setDocumentMargin(0)
-        # opt = QTextOption()
-        # # Could also be opt.WrapMode.WordWrap
-        # opt.setWrapMode(opt.WrapMode.WrapAtWordBoundaryOrAnywhere)
-        # doc.setDefaultTextOption(opt)
-        # doc.setTextWidth(rect.width())
-
-        # doc.setDefaultStyleSheet(
-        #     f"body {{color: {self.font_color.name(QColor.NameFormat.HexRgb)};}}"
-        # )
-
-        # doc.setMarkdown(text, QTextDocument.MarkdownFeature.MarkdownDialectGitHub)
-        # # This is needed, otherwise the style isn't applied
-        # doc.setHtml(doc.toHtml())
-        # # This is needed for the margin
-        # painter.translate(rect.topLeft())
-        # doc.drawContents(painter)
-
         painter.end()
 
-        # Convert QImage to PIL image
-        buffer = QBuffer()
-        buffer.open(QBuffer.OpenModeFlag.ReadWrite)
-        image.save(buffer, "PNG", 100)
-        pil_im = Image.open(BytesIO(buffer.data()))
-        return pil_im
+        return image
+
+    def _make_markdown_text_image(
+        self, size: tuple[int, int], rect: QRect, text: str
+    ) -> Image.Image:
+        width, height = size
+
+        # Create a new image
+        image = QImage(width, height, QImage.Format.Format_ARGB32)
+        image.fill(self.ui.backgroundColorPicker.selectedColor)
+
+        painter = QPainter(image)
+
+        # Renders the markdown using a QTextDocument
+        doc = QTextDocument()
+        doc.setDocumentMargin(0)
+        opt = QTextOption()
+        # Could also be opt.WrapMode.WordWrap
+        opt.setWrapMode(opt.WrapMode.WrapAtWordBoundaryOrAnywhere)
+        doc.setDefaultFont(self.font_obj)
+        doc.setDefaultTextOption(opt)
+        doc.setTextWidth(rect.width())
+        # This is the only way i found to set text color
+        doc.setDefaultStyleSheet(
+            f"body {{color: {self.ui.textColorPicker.selectedColor.name(QColor.NameFormat.HexRgb)};}}"
+        )
+
+        doc.setMarkdown(text, QTextDocument.MarkdownFeature.MarkdownDialectGitHub)
+        # This is needed, otherwise the style isn't applied
+        doc.setHtml(doc.toHtml())
+        # This is needed for the margin
+        painter.translate(rect.topLeft())
+        doc.drawContents(painter)
+
+        return image
 
     def make_image(self) -> Image.Image:
         size = self.border_size

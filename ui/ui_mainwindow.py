@@ -16,10 +16,11 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFontComboBox, QFormLayout,
-    QFrame, QHBoxLayout, QLabel, QMainWindow,
-    QMenu, QMenuBar, QPlainTextEdit, QSizePolicy,
-    QSpinBox, QStatusBar, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFontComboBox,
+    QFormLayout, QFrame, QHBoxLayout, QLabel,
+    QMainWindow, QMenu, QMenuBar, QPlainTextEdit,
+    QSizePolicy, QSpinBox, QStatusBar, QVBoxLayout,
+    QWidget)
 
 from widgets import ColorPickerWidget
 
@@ -117,6 +118,16 @@ class Ui_MainWindow(object):
 
         self.borderControlsLayout.addWidget(self.directionComboBox)
 
+        self.markdownModeCheckBox = QCheckBox(self.centralwidget)
+        self.markdownModeCheckBox.setObjectName(u"markdownModeCheckBox")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.markdownModeCheckBox.sizePolicy().hasHeightForWidth())
+        self.markdownModeCheckBox.setSizePolicy(sizePolicy1)
+
+        self.borderControlsLayout.addWidget(self.markdownModeCheckBox)
+
 
         self.verticalLayout.addLayout(self.borderControlsLayout)
 
@@ -203,6 +214,10 @@ class Ui_MainWindow(object):
         self.directionComboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"Up", None))
         self.directionComboBox.setItemText(3, QCoreApplication.translate("MainWindow", u"Down", None))
 
+        self.markdownModeCheckBox.setText(QCoreApplication.translate("MainWindow", u"Markdown mode", None))
+#if QT_CONFIG(shortcut)
+        self.markdownModeCheckBox.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+M", None))
+#endif // QT_CONFIG(shortcut)
         self.textColorlabel.setText(QCoreApplication.translate("MainWindow", u"Text color", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi
