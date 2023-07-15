@@ -1,3 +1,10 @@
+from io import BytesIO
+
+from PIL import Image
+from PySide6.QtCore import QBuffer
+from PySide6.QtGui import QImage
+from PySide6.QtWidgets import QMessageBox
+
 from enums import Direction
 
 
@@ -14,3 +21,25 @@ def recommended_border_size(
     # Direction is UP or DOWN
     else:
         return img_height / 2
+
+
+def qimage_to_pil(im: QImage, /) -> Image.Image:
+    """Converts a QImage to a PIL image"""
+    buffer = QBuffer()
+    buffer.open(QBuffer.OpenModeFlag.ReadWrite)
+    im.save(buffer, "PNG", 100)
+    return Image.open(BytesIO(buffer.data()))
+
+
+def exception_to_msgbox(e: Exception, /, *, show_traceback=True) -> QMessageBox:
+    """
+    Convenience function to generate a msgbox from an exception
+    You should use setWindowTitle and setText afterwards
+    """
+    msgbox = QMessageBox()
+    msgbox.setWindowTitle("Error")
+    msgbox.setIcon(QMessageBox.Icon.Critical)
+    msgbox.setStandardButtons(QMessageBox.StandardButton.Ok)
+    if show_traceback:
+        msgbox.setDetailedText(str(e))
+    return msgbox

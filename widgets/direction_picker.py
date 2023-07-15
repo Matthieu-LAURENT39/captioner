@@ -30,9 +30,9 @@ class DirectionPickerWidget(QFrame):
         super().__init__(parent)
         self.selectedDirection: Direction = Direction.RIGHT
 
-        self.setupUI(button_size)
+        self.setupUi(button_size)
 
-    def setupUI(self, button_size: int):
+    def setupUi(self, button_size: int):
         # Create the layout for the widget
         layout = QHBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)

@@ -1,9 +1,7 @@
 import sys
-import time
-from io import BytesIO
 
 from PIL import Image, UnidentifiedImageError
-from PySide6.QtCore import QBuffer, QRect, Qt
+from PySide6.QtCore import QRect, Qt
 from PySide6.QtGui import (
     QColor,
     QFont,
@@ -84,12 +82,6 @@ class MainWindow(QMainWindow):
         im = self.make_image()
         self.current_image = im
 
-    # def _markdown_to_qtextdocument(self, text: str):
-    #     html_text = mistune.markdown(text)
-    #     document = QTextDocument()
-    #     document.setHtml(html_text)
-    #     return document
-
     def _make_text_image(self, size: tuple[int, int], margin: int, text: str) -> QImage:
         width, height = size
 
@@ -111,12 +103,7 @@ class MainWindow(QMainWindow):
         else:
             img = self._make_plain_text_image(size, rect, text)
 
-        # Convert QImage to PIL image
-        buffer = QBuffer()
-        buffer.open(QBuffer.OpenModeFlag.ReadWrite)
-        img.save(buffer, "PNG", 100)
-        pil_im = Image.open(BytesIO(buffer.data()))
-        return pil_im
+        return utils.qimage_to_pil(img)
 
     def _make_plain_text_image(
         self, size: tuple[int, int], rect: QRect, text: str
@@ -245,11 +232,9 @@ class MainWindow(QMainWindow):
             img = Image.open(filename).convert("RGBA")
         except UnidentifiedImageError as e:
             # This is raised when PIL can't save to a specific format
-            error_dialog = QMessageBox()
-            error_dialog.setIcon(QMessageBox.Icon.Critical)
+            error_dialog = utils.exception_to_msgbox(e)
             error_dialog.setWindowTitle("Error opening image")
             error_dialog.setText("This file format is not supported.")
-            error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
             error_dialog.exec()
             return
 
@@ -273,12 +258,9 @@ class MainWindow(QMainWindow):
             self.current_image.save(filename)
         except ValueError as e:
             # This is raised when PIL can't save to a specific format
-            error_dialog = QMessageBox()
-            error_dialog.setIcon(QMessageBox.Icon.Critical)
+            error_dialog = utils.exception_to_msgbox(e, show_traceback=False)
             error_dialog.setWindowTitle("Error saving image")
             error_dialog.setText("This file extension is not supported.")
-            error_dialog.setDetailedText(str(e))
-            error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
             error_dialog.exec()
             return
 
