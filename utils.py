@@ -31,6 +31,13 @@ def qimage_to_pil(im: QImage, /) -> Image.Image:
     return Image.open(BytesIO(buffer.data()))
 
 
+def pil_to_qimage(im: Image.Image, /) -> QImage:
+    """Converts a PIL image to a QImage"""
+    # ImageQt doesn't work, so we instead pass via IO
+    data = im.tobytes("raw", "BGRA")
+    return QImage(data, im.width, im.height, QImage.Format.Format_ARGB32)
+
+
 def exception_to_msgbox(e: Exception, /, *, show_traceback=True) -> QMessageBox:
     """
     Convenience function to generate a msgbox from an exception
