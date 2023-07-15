@@ -51,7 +51,7 @@ class CaptionGeneratorConfigUI(CaptionGeneratorConfig):
 
     @property
     def markdown_mode(self) -> bool:
-        return self._window.ui.markdownModeCheckBox.isChecked()
+        return self._window.ui.actionMarkdownMode.isChecked()
 
     @property
     def background_color(self) -> QColor:
@@ -87,7 +87,7 @@ class MainWindow(QMainWindow):
             self.ui.fontSizeSpinBox.valueChanged,
             self.ui.textColorPicker.colorChanged,
             self.ui.backgroundColorPicker.colorChanged,
-            self.ui.markdownModeCheckBox.stateChanged,
+            self.ui.actionMarkdownMode.changed,
             self.ui.directionComboBox.currentTextChanged,
         ):
             signal.connect(self.recompute_image)
