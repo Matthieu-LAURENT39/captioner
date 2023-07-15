@@ -90,10 +90,11 @@ class MainWindow(QMainWindow):
             self.ui.actionMarkdownMode.changed,
             self.ui.directionComboBox.currentTextChanged,
         ):
-            signal.connect(self.recompute_image)
+            signal.connect(self._value_changed)
 
         self.ui.actionSave.triggered.connect(self.save_image)
         self.ui.actionOpen.triggered.connect(self.open_image)
+        self.ui.actionRender.triggered.connect(self.recompute_image)
 
     @property
     def current_image(self):
@@ -111,10 +112,14 @@ class MainWindow(QMainWindow):
         pix = QPixmap.fromImage(q_image)
         self.ui.imageLabel.setPixmap(pix)
 
+    def _value_changed(self):
+        if not self.ui.actionAutoRender.isChecked():
+            return
+        self.recompute_image()
+
     def recompute_image(self):
         if self.base_image is None:
             return
-
         im = self.generator.make_image()
         self.current_image = im
 
