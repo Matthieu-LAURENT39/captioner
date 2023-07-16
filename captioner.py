@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 
 from PIL import Image, UnidentifiedImageError
+from PySide6.QtCore import QMutex, QThread, Signal, Slot
 from PySide6.QtGui import QColor, QFont, QPixmap
 from PySide6.QtWidgets import QApplication, QFileDialog, QMainWindow
 
@@ -10,6 +11,38 @@ import utils
 from caption_generator import CaptionGenerator, CaptionGeneratorConfig
 from enums import Direction
 from ui.ui_mainwindow import Ui_MainWindow
+
+
+class ImageGeneratorThread(QThread):
+    imageGenerated = Signal(Image.Image)
+
+    def __init__(self, generator: CaptionGenerator):
+        super().__init__()
+        self.generator = generator
+        self.mutex = QMutex()
+        self.generation_needed = False
+
+    def refresh_image(self):
+        self.mutex.lock()
+        self.generation_needed = True
+        self.mutex.unlock()
+
+    def run(self) -> None:
+        while True:
+            if self.isInterruptionRequested():
+                return
+
+            self.mutex.lock()
+            generation_needed = self.generation_needed
+            self.mutex.unlock()
+
+            if generation_needed:
+                self.mutex.lock()
+                self.generation_needed = False
+                self.mutex.unlock()
+
+                im = self.generator.make_image()
+                self.imageGenerated.emit(im)
 
 
 class CaptionGeneratorConfigUI(CaptionGeneratorConfig):
@@ -78,6 +111,10 @@ class MainWindow(QMainWindow):
         self.generator_config = CaptionGeneratorConfigUI(self)
         self.generator = CaptionGenerator(self.generator_config)
 
+        self.image_thread = ImageGeneratorThread(self.generator)
+        self.image_thread.imageGenerated.connect(self.image_generated)
+        self.image_thread.start()
+
         # Connect signals
         for signal in (
             self.ui.sizeSpinBox.valueChanged,
@@ -120,7 +157,12 @@ class MainWindow(QMainWindow):
     def recompute_image(self):
         if self.base_image is None:
             return
-        im = self.generator.make_image()
+
+        # Queue a regeneration of the image
+        self.image_thread.refresh_image()
+
+    @Slot(Image.Image)
+    def image_generated(self, im: Image.Image):
         self.current_image = im
 
     def load_image(self, new_image: Image.Image):

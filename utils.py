@@ -23,6 +23,8 @@ def recommended_border_size(
         return img_height / 2
 
 
+#! This function is really slow, and is a bottleneck. Needs optimizing
+# The main culprit is the call to im.save
 def qimage_to_pil(im: QImage, /) -> Image.Image:
     """Converts a QImage to a PIL image"""
     buffer = QBuffer()
