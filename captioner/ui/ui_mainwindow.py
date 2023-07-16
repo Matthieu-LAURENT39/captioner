@@ -56,6 +56,8 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.imageLabel = QLabel(self.centralwidget)
         self.imageLabel.setObjectName(u"imageLabel")
+        self.imageLabel.setStyleSheet(u"background-color: rgba(0,0,0,0);\n"
+"font: 48pt;")
         self.imageLabel.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout.addWidget(self.imageLabel)
@@ -284,7 +286,8 @@ class Ui_MainWindow(object):
         self.actionSourceCode.setText(QCoreApplication.translate("MainWindow", u"Source code", None))
         self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.actionDrawMargins.setText(QCoreApplication.translate("MainWindow", u"Draw margins", None))
-        self.imageLabel.setText("")
+        self.imageLabel.setText(QCoreApplication.translate("MainWindow", u"Open an image, or\n"
+"drag-and-drop one here!", None))
         self.sizeLabel.setText(QCoreApplication.translate("MainWindow", u"Border size", None))
         self.sizeSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
         self.backgroundColorLabel.setText(QCoreApplication.translate("MainWindow", u"Background color", None))

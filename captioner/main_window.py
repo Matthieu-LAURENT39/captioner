@@ -129,7 +129,9 @@ class MainWindow(QMainWindow):
     @current_image.setter
     def current_image(self, image: Image.Image):
         self._current_image = image
+        self._display_image(image)
 
+    def _display_image(self, image: Image.Image):
         # We make a thumnnail of the image for the display
         thumb = image.copy()
         thumb.thumbnail((700, 350))
@@ -159,6 +161,10 @@ class MainWindow(QMainWindow):
 
     def load_image(self, new_image: Image.Image):
         """Replaces the current loaded image with a new one"""
+        # Remove whatever is on the label right now
+        self.ui.imageLabel.setText("")
+        self.ui.imageLabel.setStyleSheet("")
+
         self.base_image = new_image
         self.generator_config.border_size = utils.recommended_border_size(
             new_image.width, new_image.height, self.generator_config.direction

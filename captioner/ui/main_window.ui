@@ -17,8 +17,13 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="imageLabel">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(0,0,0,0);
+font: 48pt;</string>
+      </property>
       <property name="text">
-       <string/>
+       <string>Open an image, or
+drag-and-drop one here!</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
