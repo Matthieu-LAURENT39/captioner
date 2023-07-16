@@ -15,12 +15,12 @@ def recommended_border_size(
 
     if direction in (Direction.LEFT, Direction.RIGHT):
         if is_landscape:
-            return img_width * (3 / 4)
+            return round(img_width * (3 / 4))
         else:
             return img_width
     # Direction is UP or DOWN
     else:
-        return img_height / 2
+        return round(img_height / 2)
 
 
 #! This function is really slow, and is a bottleneck. Needs optimizing

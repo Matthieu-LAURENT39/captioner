@@ -19,7 +19,7 @@ class CaptionGeneratorConfigUI(CaptionGeneratorConfig):
         self._window = main_window
 
     @property
-    def base_image(self) -> Image.Image:
+    def base_image(self) -> Image.Image | None:
         return self._window.base_image
 
     @property

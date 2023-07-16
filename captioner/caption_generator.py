@@ -20,7 +20,7 @@ from .enums import Direction
 
 @dataclass
 class CaptionGeneratorConfig:
-    base_image: Image.Image
+    base_image: Image.Image | None
 
     direction: Direction
 
@@ -55,14 +55,14 @@ DEFAULT_CONFIG = CaptionGeneratorConfig(
 
 
 class CaptionGenerator:
-    def __init__(self, config: CaptionGeneratorConfig = None) -> None:
+    def __init__(self, config: CaptionGeneratorConfig | None = None) -> None:
         if config is None:
             config = copy(DEFAULT_CONFIG)
 
         self.config = config
         self.markdown_mode = False
 
-    def _make_text_image(self, size: tuple[int, int]) -> QImage:
+    def _make_text_image(self, size: tuple[int, int]) -> Image.Image:
         width, height = size
 
         rect = QRect(
@@ -117,9 +117,7 @@ class CaptionGenerator:
 
         return image
 
-    def _make_markdown_text_image(
-        self, size: tuple[int, int], rect: QRect
-    ) -> Image.Image:
+    def _make_markdown_text_image(self, size: tuple[int, int], rect: QRect) -> QImage:
         width, height = size
 
         # Create a new image
@@ -154,6 +152,9 @@ class CaptionGenerator:
         return image
 
     def make_image(self) -> Image.Image:
+        if self.config.base_image is None:
+            raise ValueError("Can't generate an image, as no base_image was provided")
+
         size = self.config.border_size
         if size == 0:
             return self.config.base_image
