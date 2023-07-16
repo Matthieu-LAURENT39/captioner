@@ -35,8 +35,16 @@ class CaptionGeneratorConfigUI(CaptionGeneratorConfig):
         self._window.ui.sizeSpinBox.setValue(value)
 
     @property
-    def margin(self) -> int:
-        return self._window.ui.marginSpinBox.value()
+    def left_margin(self) -> int:
+        return self._window.ui.leftMarginSpinBox.value()
+
+    @property
+    def right_margin(self) -> int:
+        return self._window.ui.rightMarginSpinBox.value()
+
+    @property
+    def top_margin(self) -> int:
+        return self._window.ui.topMarginSpinBox.value()
 
     @property
     def caption(self) -> str:
@@ -85,7 +93,9 @@ class MainWindow(QMainWindow):
         # Connect signals
         for signal in (
             self.ui.sizeSpinBox.valueChanged,
-            self.ui.marginSpinBox.valueChanged,
+            self.ui.leftMarginSpinBox.valueChanged,
+            self.ui.rightMarginSpinBox.valueChanged,
+            self.ui.topMarginSpinBox.valueChanged,
             self.ui.captionEdit.textChanged,
             self.ui.fontComboBox.currentFontChanged,
             self.ui.fontSizeSpinBox.valueChanged,

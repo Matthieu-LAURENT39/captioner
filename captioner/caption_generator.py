@@ -15,7 +15,9 @@ class CaptionGeneratorConfig:
 
     direction: Direction
     border_size: int
-    margin: int
+    left_margin: int
+    right_margin: int
+    top_margin: int
 
     caption: str
     font: QFont
@@ -29,7 +31,9 @@ DEFAULT_CONFIG = CaptionGeneratorConfig(
     base_image=None,
     direction=Direction.RIGHT,
     border_size=0,
-    margin=0,
+    left_margin=0,
+    right_margin=0,
+    top_margin=0,
     caption="",
     font=QFont(),
     markdown_mode=False,
@@ -49,21 +53,11 @@ class CaptionGenerator:
     def _make_text_image(self, size: tuple[int, int]) -> QImage:
         width, height = size
 
-        rect_left_offset = (
-            0
-            if self.config.direction in (Direction.UP, Direction.DOWN)
-            else self.config.margin
-        )
-        rect_top_offset = (
-            0
-            if self.config.direction in (Direction.LEFT, Direction.RIGHT)
-            else self.config.margin
-        )
         rect = QRect(
-            rect_left_offset,
-            rect_top_offset,
-            width - rect_left_offset,
-            height - rect_top_offset,
+            self.config.left_margin,
+            self.config.top_margin,
+            width - self.config.left_margin - self.config.right_margin,
+            height - self.config.top_margin,
         )
 
         if self.config.markdown_mode:

@@ -17,9 +17,10 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFontComboBox, QFormLayout,
-    QFrame, QHBoxLayout, QLabel, QMainWindow,
-    QMenu, QMenuBar, QPlainTextEdit, QSizePolicy,
-    QSpinBox, QStatusBar, QVBoxLayout, QWidget)
+    QFrame, QGridLayout, QHBoxLayout, QLabel,
+    QLayout, QMainWindow, QMenu, QMenuBar,
+    QPlainTextEdit, QSizePolicy, QSpinBox, QStatusBar,
+    QVBoxLayout, QWidget)
 
 from captioner.widgets import ColorPickerWidget
 
@@ -27,7 +28,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 433)
+        MainWindow.resize(854, 448)
         self.actionOpen = QAction(MainWindow)
         self.actionOpen.setObjectName(u"actionOpen")
         self.actionSave = QAction(MainWindow)
@@ -61,6 +62,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.captionEdit)
 
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setSizeConstraint(QLayout.SetMinimumSize)
+        self.leftControlsLayout = QVBoxLayout()
+        self.leftControlsLayout.setObjectName(u"leftControlsLayout")
         self.borderControlsLayout = QHBoxLayout()
         self.borderControlsLayout.setObjectName(u"borderControlsLayout")
         self.borderSizeLayout = QFormLayout()
@@ -79,23 +85,6 @@ class Ui_MainWindow(object):
 
 
         self.borderControlsLayout.addLayout(self.borderSizeLayout)
-
-        self.marginLayout = QFormLayout()
-        self.marginLayout.setObjectName(u"marginLayout")
-        self.marginLayout.setFormAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
-        self.marginLabel = QLabel(self.centralwidget)
-        self.marginLabel.setObjectName(u"marginLabel")
-
-        self.marginLayout.setWidget(0, QFormLayout.LabelRole, self.marginLabel)
-
-        self.marginSpinBox = QSpinBox(self.centralwidget)
-        self.marginSpinBox.setObjectName(u"marginSpinBox")
-        self.marginSpinBox.setMaximum(99999)
-
-        self.marginLayout.setWidget(0, QFormLayout.FieldRole, self.marginSpinBox)
-
-
-        self.borderControlsLayout.addLayout(self.marginLayout)
 
         self.backgroundColorLayout = QFormLayout()
         self.backgroundColorLayout.setObjectName(u"backgroundColorLayout")
@@ -131,7 +120,7 @@ class Ui_MainWindow(object):
         self.borderControlsLayout.addWidget(self.directionComboBox)
 
 
-        self.verticalLayout.addLayout(self.borderControlsLayout)
+        self.leftControlsLayout.addLayout(self.borderControlsLayout)
 
         self.textControlsLayout = QHBoxLayout()
         self.textControlsLayout.setObjectName(u"textControlsLayout")
@@ -173,12 +162,74 @@ class Ui_MainWindow(object):
         self.textControlsLayout.addWidget(self.fontSizeSpinBox)
 
 
-        self.verticalLayout.addLayout(self.textControlsLayout)
+        self.leftControlsLayout.addLayout(self.textControlsLayout)
+
+
+        self.horizontalLayout.addLayout(self.leftControlsLayout)
+
+        self.marginControlsLayout = QGridLayout()
+        self.marginControlsLayout.setObjectName(u"marginControlsLayout")
+        self.leftMarginLabel = QLabel(self.centralwidget)
+        self.leftMarginLabel.setObjectName(u"leftMarginLabel")
+
+        self.marginControlsLayout.addWidget(self.leftMarginLabel, 1, 0, 1, 1)
+
+        self.rightMarginLabel = QLabel(self.centralwidget)
+        self.rightMarginLabel.setObjectName(u"rightMarginLabel")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.rightMarginLabel.sizePolicy().hasHeightForWidth())
+        self.rightMarginLabel.setSizePolicy(sizePolicy1)
+
+        self.marginControlsLayout.addWidget(self.rightMarginLabel, 2, 0, 1, 1)
+
+        self.leftMarginSpinBox = QSpinBox(self.centralwidget)
+        self.leftMarginSpinBox.setObjectName(u"leftMarginSpinBox")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.leftMarginSpinBox.sizePolicy().hasHeightForWidth())
+        self.leftMarginSpinBox.setSizePolicy(sizePolicy2)
+        self.leftMarginSpinBox.setMaximum(99999)
+
+        self.marginControlsLayout.addWidget(self.leftMarginSpinBox, 1, 1, 1, 1)
+
+        self.rightMarginSpinBox = QSpinBox(self.centralwidget)
+        self.rightMarginSpinBox.setObjectName(u"rightMarginSpinBox")
+        sizePolicy2.setHeightForWidth(self.rightMarginSpinBox.sizePolicy().hasHeightForWidth())
+        self.rightMarginSpinBox.setSizePolicy(sizePolicy2)
+        self.rightMarginSpinBox.setMaximum(99999)
+
+        self.marginControlsLayout.addWidget(self.rightMarginSpinBox, 2, 1, 1, 1)
+
+        self.topMarginLayout = QHBoxLayout()
+        self.topMarginLayout.setObjectName(u"topMarginLayout")
+        self.topMarginLabel = QLabel(self.centralwidget)
+        self.topMarginLabel.setObjectName(u"topMarginLabel")
+
+        self.topMarginLayout.addWidget(self.topMarginLabel)
+
+        self.topMarginSpinBox = QSpinBox(self.centralwidget)
+        self.topMarginSpinBox.setObjectName(u"topMarginSpinBox")
+        self.topMarginSpinBox.setMaximum(99999)
+
+        self.topMarginLayout.addWidget(self.topMarginSpinBox)
+
+
+        self.marginControlsLayout.addLayout(self.topMarginLayout, 1, 2, 1, 1)
+
+
+        self.horizontalLayout.addLayout(self.marginControlsLayout)
+
+        self.horizontalLayout.setStretch(0, 1)
+
+        self.verticalLayout.addLayout(self.horizontalLayout)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 30))
+        self.menubar.setGeometry(QRect(0, 0, 854, 30))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuEdit = QMenu(self.menubar)
@@ -231,8 +282,6 @@ class Ui_MainWindow(object):
         self.imageLabel.setText("")
         self.sizeLabel.setText(QCoreApplication.translate("MainWindow", u"Border size", None))
         self.sizeSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
-        self.marginLabel.setText(QCoreApplication.translate("MainWindow", u"Margin", None))
-        self.marginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
         self.backgroundColorLabel.setText(QCoreApplication.translate("MainWindow", u"Background color", None))
         self.directionComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Right", None))
         self.directionComboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Left", None))
@@ -240,6 +289,12 @@ class Ui_MainWindow(object):
         self.directionComboBox.setItemText(3, QCoreApplication.translate("MainWindow", u"Down", None))
 
         self.textColorlabel.setText(QCoreApplication.translate("MainWindow", u"Text color", None))
+        self.leftMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Left margin", None))
+        self.rightMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Right margin", None))
+        self.leftMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
+        self.rightMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
+        self.topMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Top margin", None))
+        self.topMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuEdit.setTitle(QCoreApplication.translate("MainWindow", u"Edit", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
