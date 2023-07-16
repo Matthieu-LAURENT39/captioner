@@ -2,7 +2,14 @@ from __future__ import annotations
 
 from PIL import Image, UnidentifiedImageError
 from PySide6.QtCore import Slot
-from PySide6.QtGui import QColor, QFont, QPixmap, QDesktopServices
+from PySide6.QtGui import (
+    QColor,
+    QFont,
+    QPixmap,
+    QDesktopServices,
+    QDragEnterEvent,
+    QDropEvent,
+)
 from PySide6.QtWidgets import QFileDialog, QMainWindow, QMessageBox
 
 from . import constants, utils
@@ -85,6 +92,7 @@ class MainWindow(QMainWindow):
         self.ui.backgroundColorPicker.selectedColor = QColor(255, 255, 255)
         self.base_image = None
         self._current_image = None
+        self.setAcceptDrops(True)
 
         # Setup the caption generator
         self.generator_config = CaptionGeneratorConfigUI(self)
@@ -171,6 +179,18 @@ class MainWindow(QMainWindow):
         )
         self.recompute_image()
 
+    def load_image_from_file(self, filename: str):
+        try:
+            img = Image.open(filename).convert("RGBA")
+        except UnidentifiedImageError as e:
+            # This is raised when PIL can't save to a specific format
+            error_dialog = utils.exception_to_msgbox(e)
+            error_dialog.setWindowTitle("Error opening image")
+            error_dialog.setText("This file format is not supported.")
+            error_dialog.exec()
+            return
+        self.load_image(img)
+
     def open_image(self):
         """Prompts the user to load an image"""
         filename, filt = QFileDialog.getOpenFileName(
@@ -181,17 +201,7 @@ class MainWindow(QMainWindow):
         if not filename:
             return
 
-        try:
-            img = Image.open(filename).convert("RGBA")
-        except UnidentifiedImageError as e:
-            # This is raised when PIL can't save to a specific format
-            error_dialog = utils.exception_to_msgbox(e)
-            error_dialog.setWindowTitle("Error opening image")
-            error_dialog.setText("This file format is not supported.")
-            error_dialog.exec()
-            return
-
-        self.load_image(img)
+        self.load_image_from_file(filename)
 
     def save_image(self):
         """Prompts the user to save the image"""
@@ -227,3 +237,18 @@ class MainWindow(QMainWindow):
 This program is released under the GPL v3 (or later).
 If you enjoy this program, please leave a star on github!""",
         )
+
+    # We need to accept the QDragEnterEvent or the QDropEvent won't be fired
+    def dragEnterEvent(self, event: QDragEnterEvent):
+        if event.mimeData().hasImage() or event.mimeData().hasUrls():
+            event.acceptProposedAction()
+
+    def dropEvent(self, event: QDropEvent):
+        if event.mimeData().hasImage():
+            self.load_image(utils.qimage_to_pil(event.mimeData().imageData()))
+
+        elif event.mimeData().hasUrls():
+            urls = event.mimeData().urls()
+            image_path = urls[0].toLocalFile()
+            self.load_image_from_file(image_path)
+            event.acceptProposedAction()
