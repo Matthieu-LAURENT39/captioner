@@ -54,6 +54,10 @@ class CaptionGeneratorConfigUI(CaptionGeneratorConfig):
         return self._window.ui.topMarginSpinBox.value()
 
     @property
+    def bottom_margin(self) -> int:
+        return self._window.ui.bottomMarginSpinBox.value()
+
+    @property
     def draw_margins(self) -> bool:
         return self._window.ui.actionDrawMargins.isChecked()
 
@@ -108,6 +112,7 @@ class MainWindow(QMainWindow):
             self.ui.leftMarginSpinBox.valueChanged,
             self.ui.rightMarginSpinBox.valueChanged,
             self.ui.topMarginSpinBox.valueChanged,
+            self.ui.bottomMarginSpinBox.valueChanged,
             self.ui.captionEdit.textChanged,
             self.ui.fontComboBox.currentFontChanged,
             self.ui.fontSizeSpinBox.valueChanged,

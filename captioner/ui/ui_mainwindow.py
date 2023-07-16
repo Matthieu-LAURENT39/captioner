@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(854, 448)
+        MainWindow.resize(867, 448)
         self.actionOpen = QAction(MainWindow)
         self.actionOpen.setObjectName(u"actionOpen")
         self.actionSave = QAction(MainWindow)
@@ -174,55 +174,61 @@ class Ui_MainWindow(object):
 
         self.marginControlsLayout = QGridLayout()
         self.marginControlsLayout.setObjectName(u"marginControlsLayout")
+        self.rightMarginSpinBox = QSpinBox(self.centralwidget)
+        self.rightMarginSpinBox.setObjectName(u"rightMarginSpinBox")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.rightMarginSpinBox.sizePolicy().hasHeightForWidth())
+        self.rightMarginSpinBox.setSizePolicy(sizePolicy1)
+        self.rightMarginSpinBox.setMaximum(99999)
+
+        self.marginControlsLayout.addWidget(self.rightMarginSpinBox, 2, 1, 1, 1)
+
         self.leftMarginLabel = QLabel(self.centralwidget)
         self.leftMarginLabel.setObjectName(u"leftMarginLabel")
 
         self.marginControlsLayout.addWidget(self.leftMarginLabel, 1, 0, 1, 1)
 
-        self.rightMarginLabel = QLabel(self.centralwidget)
-        self.rightMarginLabel.setObjectName(u"rightMarginLabel")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.rightMarginLabel.sizePolicy().hasHeightForWidth())
-        self.rightMarginLabel.setSizePolicy(sizePolicy1)
+        self.topMarginLabel = QLabel(self.centralwidget)
+        self.topMarginLabel.setObjectName(u"topMarginLabel")
 
-        self.marginControlsLayout.addWidget(self.rightMarginLabel, 2, 0, 1, 1)
+        self.marginControlsLayout.addWidget(self.topMarginLabel, 1, 2, 1, 1)
 
         self.leftMarginSpinBox = QSpinBox(self.centralwidget)
         self.leftMarginSpinBox.setObjectName(u"leftMarginSpinBox")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.leftMarginSpinBox.sizePolicy().hasHeightForWidth())
-        self.leftMarginSpinBox.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.leftMarginSpinBox.sizePolicy().hasHeightForWidth())
+        self.leftMarginSpinBox.setSizePolicy(sizePolicy1)
         self.leftMarginSpinBox.setMaximum(99999)
 
         self.marginControlsLayout.addWidget(self.leftMarginSpinBox, 1, 1, 1, 1)
 
-        self.rightMarginSpinBox = QSpinBox(self.centralwidget)
-        self.rightMarginSpinBox.setObjectName(u"rightMarginSpinBox")
-        sizePolicy2.setHeightForWidth(self.rightMarginSpinBox.sizePolicy().hasHeightForWidth())
-        self.rightMarginSpinBox.setSizePolicy(sizePolicy2)
-        self.rightMarginSpinBox.setMaximum(99999)
+        self.rightMarginLabel = QLabel(self.centralwidget)
+        self.rightMarginLabel.setObjectName(u"rightMarginLabel")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.rightMarginLabel.sizePolicy().hasHeightForWidth())
+        self.rightMarginLabel.setSizePolicy(sizePolicy2)
 
-        self.marginControlsLayout.addWidget(self.rightMarginSpinBox, 2, 1, 1, 1)
-
-        self.topMarginLayout = QHBoxLayout()
-        self.topMarginLayout.setObjectName(u"topMarginLayout")
-        self.topMarginLabel = QLabel(self.centralwidget)
-        self.topMarginLabel.setObjectName(u"topMarginLabel")
-
-        self.topMarginLayout.addWidget(self.topMarginLabel)
+        self.marginControlsLayout.addWidget(self.rightMarginLabel, 2, 0, 1, 1)
 
         self.topMarginSpinBox = QSpinBox(self.centralwidget)
         self.topMarginSpinBox.setObjectName(u"topMarginSpinBox")
         self.topMarginSpinBox.setMaximum(99999)
 
-        self.topMarginLayout.addWidget(self.topMarginSpinBox)
+        self.marginControlsLayout.addWidget(self.topMarginSpinBox, 1, 3, 1, 1)
 
+        self.bottomMarginLabel = QLabel(self.centralwidget)
+        self.bottomMarginLabel.setObjectName(u"bottomMarginLabel")
 
-        self.marginControlsLayout.addLayout(self.topMarginLayout, 1, 2, 1, 1)
+        self.marginControlsLayout.addWidget(self.bottomMarginLabel, 2, 2, 1, 1)
+
+        self.bottomMarginSpinBox = QSpinBox(self.centralwidget)
+        self.bottomMarginSpinBox.setObjectName(u"bottomMarginSpinBox")
+        self.bottomMarginSpinBox.setMaximum(99999)
+
+        self.marginControlsLayout.addWidget(self.bottomMarginSpinBox, 2, 3, 1, 1)
 
 
         self.horizontalLayout.addLayout(self.marginControlsLayout)
@@ -234,7 +240,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 854, 30))
+        self.menubar.setGeometry(QRect(0, 0, 867, 30))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuEdit = QMenu(self.menubar)
@@ -297,12 +303,14 @@ class Ui_MainWindow(object):
         self.directionComboBox.setItemText(3, QCoreApplication.translate("MainWindow", u"Down", None))
 
         self.textColorlabel.setText(QCoreApplication.translate("MainWindow", u"Text color", None))
-        self.leftMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Left margin", None))
-        self.rightMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Right margin", None))
-        self.leftMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
         self.rightMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
+        self.leftMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Left margin", None))
         self.topMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Top margin", None))
+        self.leftMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
+        self.rightMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Right margin", None))
         self.topMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
+        self.bottomMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Bottom margin", None))
+        self.bottomMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuEdit.setTitle(QCoreApplication.translate("MainWindow", u"Edit", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))

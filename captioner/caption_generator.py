@@ -28,6 +28,7 @@ class CaptionGeneratorConfig:
     left_margin: int
     right_margin: int
     top_margin: int
+    bottom_margin: int
     draw_margins: bool
 
     caption: str
@@ -45,6 +46,7 @@ DEFAULT_CONFIG = CaptionGeneratorConfig(
     left_margin=0,
     right_margin=0,
     top_margin=0,
+    bottom_margin=0,
     draw_margins=False,
     caption="",
     font=QFont(),
@@ -69,7 +71,7 @@ class CaptionGenerator:
             self.config.left_margin,
             self.config.top_margin,
             width - self.config.left_margin - self.config.right_margin,
-            height - self.config.top_margin,
+            height - self.config.top_margin - self.config.bottom_margin,
         )
 
         if self.config.markdown_mode:
