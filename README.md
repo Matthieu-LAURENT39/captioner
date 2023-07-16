@@ -1,3 +1,5 @@
+[![Build](https://github.com/Matthieu-LAURENT39/captioner/actions/workflows/build.yml/badge.svg?branch=main&event=push)](https://github.com/Matthieu-LAURENT39/captioner/actions/workflows/build.yml)
+
 # Captioner
 A simple GUI program written in Qt and PySide6 to help caption images.
 
@@ -18,6 +20,23 @@ Simply download the latest release for you operating system from the [release ta
 ### Automatic builds
 Builds are generated automatically with every commit, simply head to the [build action in the actions tab](https://github.com/Matthieu-LAURENT39/captioner/actions/workflows/build.yml), select the latest workflow run, and download the artifact for your OS.  
 Do note that due to restrictions with github actions, this will download a zip file. The standalone executable will be in that zip.
+
+### Running without compiling
+You will need to have the following installed:
+- Qt 6
+- Python 3.11 or above
+- The requirements from the `requirements.txt` file (you can install them with `pip install -r requirements.txt`)
+- The source code of this repository to be downloaded on your PC
+
+Once this is all setup, simply run the program by starting `run.py`
+
+### Building it yourself
+You will need to have setup everything from the [Running without compiling](#running-without-compiling) section.  
+In addition, you must also setup the following:
+- PyInstaller (You can install it with `pip install pyinstaller`.)
+
+Once this is setup, you can use the following command to build the program:
+`python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"`
 
 
 ## License
