@@ -1,46 +1,15 @@
 from __future__ import annotations
 
 from PIL import Image, UnidentifiedImageError
-from PySide6.QtCore import QMutex, QThread, Signal, Slot
+from PySide6.QtCore import Slot
 from PySide6.QtGui import QColor, QFont, QPixmap
 from PySide6.QtWidgets import QFileDialog, QMainWindow
 
 from . import utils
 from .caption_generator import CaptionGenerator, CaptionGeneratorConfig
 from .enums import Direction
+from .thread import ImageGeneratorThread
 from .ui.ui_mainwindow import Ui_MainWindow
-
-
-class ImageGeneratorThread(QThread):
-    imageGenerated = Signal(Image.Image)
-
-    def __init__(self, generator: CaptionGenerator):
-        super().__init__()
-        self.generator = generator
-        self.mutex = QMutex()
-        self.generation_needed = False
-
-    def refresh_image(self):
-        self.mutex.lock()
-        self.generation_needed = True
-        self.mutex.unlock()
-
-    def run(self) -> None:
-        while True:
-            if self.isInterruptionRequested():
-                return
-
-            self.mutex.lock()
-            generation_needed = self.generation_needed
-            self.mutex.unlock()
-
-            if generation_needed:
-                self.mutex.lock()
-                self.generation_needed = False
-                self.mutex.unlock()
-
-                im = self.generator.make_image()
-                self.imageGenerated.emit(im)
 
 
 class CaptionGeneratorConfigUI(CaptionGeneratorConfig):
