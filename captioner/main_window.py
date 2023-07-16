@@ -47,6 +47,10 @@ class CaptionGeneratorConfigUI(CaptionGeneratorConfig):
         return self._window.ui.topMarginSpinBox.value()
 
     @property
+    def draw_margins(self) -> bool:
+        return self._window.ui.actionDrawMargins.isChecked()
+
+    @property
     def caption(self) -> str:
         return self._window.ui.captionEdit.toPlainText()
 
@@ -103,6 +107,7 @@ class MainWindow(QMainWindow):
             self.ui.backgroundColorPicker.colorChanged,
             self.ui.actionMarkdownMode.changed,
             self.ui.directionComboBox.currentTextChanged,
+            self.ui.actionDrawMargins.triggered,
         ):
             signal.connect(self._value_changed)
 

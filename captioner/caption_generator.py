@@ -1,9 +1,18 @@
 from copy import copy
 from dataclasses import dataclass
+from math import ceil
 
 from PIL import Image
 from PySide6.QtCore import QRect, Qt
-from PySide6.QtGui import QColor, QFont, QImage, QPainter, QTextDocument, QTextOption
+from PySide6.QtGui import (
+    QColor,
+    QFont,
+    QImage,
+    QPainter,
+    QPen,
+    QTextDocument,
+    QTextOption,
+)
 
 from . import utils
 from .enums import Direction
@@ -14,10 +23,12 @@ class CaptionGeneratorConfig:
     base_image: Image.Image
 
     direction: Direction
+
     border_size: int
     left_margin: int
     right_margin: int
     top_margin: int
+    draw_margins: bool
 
     caption: str
     font: QFont
@@ -34,6 +45,7 @@ DEFAULT_CONFIG = CaptionGeneratorConfig(
     left_margin=0,
     right_margin=0,
     top_margin=0,
+    draw_margins=False,
     caption="",
     font=QFont(),
     markdown_mode=False,
@@ -65,7 +77,22 @@ class CaptionGenerator:
         else:
             img = self._make_plain_text_image(size, rect)
 
-        return utils.qimage_to_pil(img)
+        if self.config.draw_margins:
+            rectangle_size = ceil(max(width / 40, height / 30))
+            painter = QPainter(img)
+            painter.setPen(QPen(self.config.text_color, rectangle_size))
+            # We want to draw AROUND the rectangle, so we need to take the pen width into account
+            outside_rect = QRect(
+                rect.x() - round(rectangle_size / 2),
+                rect.y() - round(rectangle_size / 2),
+                rect.width() + rectangle_size,
+                rect.height() + rectangle_size,
+            )
+            painter.drawRect(outside_rect)
+            painter.end()
+
+        pil_img = utils.qimage_to_pil(img)
+        return pil_img
 
     def _make_plain_text_image(self, size: tuple[int, int], rect: QRect) -> QImage:
         width, height = size
