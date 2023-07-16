@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from PIL import Image, UnidentifiedImageError
 from PySide6.QtCore import Slot
-from PySide6.QtGui import QColor, QFont, QPixmap
-from PySide6.QtWidgets import QFileDialog, QMainWindow
+from PySide6.QtGui import QColor, QFont, QPixmap, QDesktopServices
+from PySide6.QtWidgets import QFileDialog, QMainWindow, QMessageBox
 
-from . import utils
+from . import constants, utils
 from .caption_generator import CaptionGenerator, CaptionGeneratorConfig
 from .enums import Direction
 from .thread import ImageGeneratorThread
@@ -96,9 +96,16 @@ class MainWindow(QMainWindow):
         ):
             signal.connect(self._value_changed)
 
+        # File menu
         self.ui.actionSave.triggered.connect(self.save_image)
         self.ui.actionOpen.triggered.connect(self.open_image)
+        # Edit menu
         self.ui.actionRender.triggered.connect(self.recompute_image)
+        # Help menu
+        self.ui.actionAbout.triggered.connect(self.showAboutDialog)
+        self.ui.actionSourceCode.triggered.connect(
+            lambda: QDesktopServices.openUrl(constants.SOURCE_CODE_URL)
+        )
 
     @property
     def current_image(self):
@@ -188,3 +195,14 @@ class MainWindow(QMainWindow):
             error_dialog.setText("This file extension is not supported.")
             error_dialog.exec()
             return
+
+    def showAboutDialog(self):
+        QMessageBox.about(
+            self,
+            "Captioner - About",
+            f"""Captioner v{constants.VERSION}
+{constants.COPYRIGHT}
+
+This program is released under the GPL v3 (or later).
+If you enjoy this program, please leave a star on github!""",
+        )

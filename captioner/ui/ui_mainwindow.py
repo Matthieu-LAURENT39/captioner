@@ -42,6 +42,10 @@ class Ui_MainWindow(object):
         self.actionAutoRender.setChecked(True)
         self.actionRender = QAction(MainWindow)
         self.actionRender.setObjectName(u"actionRender")
+        self.actionSourceCode = QAction(MainWindow)
+        self.actionSourceCode.setObjectName(u"actionSourceCode")
+        self.actionAbout = QAction(MainWindow)
+        self.actionAbout.setObjectName(u"actionAbout")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -179,6 +183,8 @@ class Ui_MainWindow(object):
         self.menuFile.setObjectName(u"menuFile")
         self.menuEdit = QMenu(self.menubar)
         self.menuEdit.setObjectName(u"menuEdit")
+        self.menuAbout = QMenu(self.menubar)
+        self.menuAbout.setObjectName(u"menuAbout")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -186,12 +192,15 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
+        self.menubar.addAction(self.menuAbout.menuAction())
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
         self.menuEdit.addAction(self.actionMarkdownMode)
         self.menuEdit.addSeparator()
         self.menuEdit.addAction(self.actionAutoRender)
         self.menuEdit.addAction(self.actionRender)
+        self.menuAbout.addAction(self.actionSourceCode)
+        self.menuAbout.addAction(self.actionAbout)
 
         self.retranslateUi(MainWindow)
 
@@ -217,6 +226,8 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.actionRender.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+R", None))
 #endif // QT_CONFIG(shortcut)
+        self.actionSourceCode.setText(QCoreApplication.translate("MainWindow", u"Source code", None))
+        self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.imageLabel.setText("")
         self.sizeLabel.setText(QCoreApplication.translate("MainWindow", u"Border size", None))
         self.sizeSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
@@ -231,5 +242,6 @@ class Ui_MainWindow(object):
         self.textColorlabel.setText(QCoreApplication.translate("MainWindow", u"Text color", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuEdit.setTitle(QCoreApplication.translate("MainWindow", u"Edit", None))
+        self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
     # retranslateUi
 
