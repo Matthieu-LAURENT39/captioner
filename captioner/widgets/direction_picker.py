@@ -4,7 +4,7 @@ from PySide6.QtCore import Signal
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QPushButton
 
-from enums import Direction
+from ..enums import Direction
 
 BUTTON_ICONS = {
     Direction.LEFT: "./resources/arrow-left-square.svg",

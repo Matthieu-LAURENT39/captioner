@@ -5,8 +5,8 @@ from PIL import Image
 from PySide6.QtCore import QRect, Qt
 from PySide6.QtGui import QColor, QFont, QImage, QPainter, QTextDocument, QTextOption
 
-import utils
-from enums import Direction
+from . import utils
+from .enums import Direction
 
 
 @dataclass

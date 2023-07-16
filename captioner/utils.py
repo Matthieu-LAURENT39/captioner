@@ -5,7 +5,7 @@ from PySide6.QtCore import QBuffer
 from PySide6.QtGui import QImage
 from PySide6.QtWidgets import QMessageBox
 
-from enums import Direction
+from .enums import Direction
 
 
 def recommended_border_size(

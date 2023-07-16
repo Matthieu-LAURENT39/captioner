@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QFontComboBox, QFormLayo
     QMenu, QMenuBar, QPlainTextEdit, QSizePolicy,
     QSpinBox, QStatusBar, QVBoxLayout, QWidget)
 
-from widgets import ColorPickerWidget
+from captioner.widgets import ColorPickerWidget
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):

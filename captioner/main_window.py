@@ -1,16 +1,14 @@
 from __future__ import annotations
 
-import sys
-
 from PIL import Image, UnidentifiedImageError
 from PySide6.QtCore import QMutex, QThread, Signal, Slot
 from PySide6.QtGui import QColor, QFont, QPixmap
-from PySide6.QtWidgets import QApplication, QFileDialog, QMainWindow
+from PySide6.QtWidgets import QFileDialog, QMainWindow
 
-import utils
-from caption_generator import CaptionGenerator, CaptionGeneratorConfig
-from enums import Direction
-from ui.ui_mainwindow import Ui_MainWindow
+from . import utils
+from .caption_generator import CaptionGenerator, CaptionGeneratorConfig
+from .enums import Direction
+from .ui.ui_mainwindow import Ui_MainWindow
 
 
 class ImageGeneratorThread(QThread):
@@ -149,12 +147,14 @@ class MainWindow(QMainWindow):
         pix = QPixmap.fromImage(q_image)
         self.ui.imageLabel.setPixmap(pix)
 
-    def _value_changed(self):
+    @Slot()
+    def _value_changed(self) -> None:
         if not self.ui.actionAutoRender.isChecked():
             return
         self.recompute_image()
 
     def recompute_image(self):
+        """Regenerates the displayed image"""
         if self.base_image is None:
             return
 
@@ -163,6 +163,7 @@ class MainWindow(QMainWindow):
 
     @Slot(Image.Image)
     def image_generated(self, im: Image.Image):
+        """Signal called whenever a new image has been generated"""
         self.current_image = im
 
     def load_image(self, new_image: Image.Image):
@@ -218,12 +219,3 @@ class MainWindow(QMainWindow):
             error_dialog.setText("This file extension is not supported.")
             error_dialog.exec()
             return
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    window = MainWindow()
-    window.show()
-
-    sys.exit(app.exec())

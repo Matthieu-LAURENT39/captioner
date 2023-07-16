@@ -1,3 +1,3 @@
 #!/bin/bash
 
-pyside6-uic ui/main_window.ui -o ui/ui_mainwindow.py
+pyside6-uic captioner/ui/main_window.ui -o captioner/ui/ui_mainwindow.py

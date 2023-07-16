@@ -1,9 +1,9 @@
 name: Build
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
   # Allows manually running the action
   workflow_dispatch:
@@ -17,15 +17,15 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
-          architecture: 'x64'
+          python-version: "3.11"
+          architecture: "x64"
       - name: Install requirements
         run: |
           pip install -r requirements.txt
           pip install pyinstaller
       - name: Build with pyinstaller
         run: |
-          python -m PyInstaller --onefile --noconsole -n "Captioner" "./captioner.py"
+          python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"
       - uses: actions/upload-artifact@v3
         with:
           name: Captioner-windows
@@ -39,15 +39,15 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
-          architecture: 'x64'
+          python-version: "3.11"
+          architecture: "x64"
       - name: Install requirements
         run: |
           pip install -r requirements.txt
           pip install pyinstaller
       - name: Build with pyinstaller
         run: |
-          python -m PyInstaller --onefile --noconsole -n "Captioner" "./captioner.py"
+          python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"
       - uses: actions/upload-artifact@v3
         with:
           name: Captioner-linux
