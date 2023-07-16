@@ -1,6 +1,7 @@
-[![Build](https://github.com/Matthieu-LAURENT39/captioner/actions/workflows/build.yml/badge.svg?branch=main&event=push)](https://github.com/Matthieu-LAURENT39/captioner/actions/workflows/build.yml)
-
 # Captioner
+[![Build](https://github.com/Matthieu-LAURENT39/captioner/actions/workflows/build.yml/badge.svg?branch=main&event=push)](https://github.com/Matthieu-LAURENT39/captioner/actions/workflows/build.yml)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 A simple GUI program written in Qt and PySide6 to help caption images.
 
 ## Features
@@ -33,7 +34,7 @@ Once this is all setup, simply run the program by starting `run.py`
 ### Building it yourself
 You will need to have setup everything from the [Running without compiling](#running-without-compiling) section.  
 In addition, you must also setup the following:
-- PyInstaller (You can install it with `pip install pyinstaller`.)
+- PyInstaller (You can install it with `pip install pyinstaller`)
 
 Once this is setup, you can use the following command to build the program:
 `python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"`
