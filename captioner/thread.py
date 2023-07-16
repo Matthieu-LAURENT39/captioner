@@ -6,6 +6,7 @@ from .caption_generator import CaptionGenerator
 
 class ImageGeneratorThread(QThread):
     imageGenerated = Signal(Image.Image)
+    """Called whenever the thread finishes generating an image"""
 
     def __init__(self, generator: CaptionGenerator):
         super().__init__()
@@ -14,6 +15,7 @@ class ImageGeneratorThread(QThread):
         self.generation_needed = False
 
     def refresh_image(self):
+        """Makes the thread regenerate an image"""
         self.mutex.lock()
         self.generation_needed = True
         self.mutex.unlock()
