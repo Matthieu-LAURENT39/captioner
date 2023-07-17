@@ -2,7 +2,11 @@
 [![Build](https://github.com/Matthieu-LAURENT39/captioner/actions/workflows/build.yml/badge.svg?branch=main&event=push)](https://github.com/Matthieu-LAURENT39/captioner/actions/workflows/build.yml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-A simple GUI program written in Qt and PySide6 to help caption images.
+A simple GUI program written in Python with Qt and PySide6 to help caption images.  
+If you want a feature to be added, feel free to open [an issue](https://github.com/Matthieu-LAURENT39/captioner/issues) to ask for it, i'd be glad to add it! If you feel like adding it yourself, PRs are welcome.  
+
+## Screenshot
+![Screenshot of the program](./screenshots/main.png)
 
 ## Features
 - Add text next to any side of the image.
@@ -10,7 +14,7 @@ A simple GUI program written in Qt and PySide6 to help caption images.
 - Ability to use Markdown in the text.
 - Easily change the border size and margin to adapt to any text length.
 - Automatic text wrapping.
-- Easy customisation of font, text color and background color.
+- Easy customisation of font, text alignment and color, and background color.
 - Standalone, no need to install anything.
 
 ## Installing
