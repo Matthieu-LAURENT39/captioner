@@ -149,13 +149,28 @@ class Ui_MainWindow(object):
 
         self.textControlsLayout.addWidget(self.fontComboBox)
 
+        self.formLayout = QFormLayout()
+        self.formLayout.setObjectName(u"formLayout")
+        self.fontSizeLabel = QLabel(self.centralwidget)
+        self.fontSizeLabel.setObjectName(u"fontSizeLabel")
+
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.fontSizeLabel)
+
         self.fontSizeSpinBox = QSpinBox(self.centralwidget)
         self.fontSizeSpinBox.setObjectName(u"fontSizeSpinBox")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.fontSizeSpinBox.sizePolicy().hasHeightForWidth())
+        self.fontSizeSpinBox.setSizePolicy(sizePolicy1)
         self.fontSizeSpinBox.setMinimum(1)
         self.fontSizeSpinBox.setMaximum(99999)
         self.fontSizeSpinBox.setValue(16)
 
-        self.textControlsLayout.addWidget(self.fontSizeSpinBox)
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.fontSizeSpinBox)
+
+
+        self.textControlsLayout.addLayout(self.formLayout)
 
 
         self.leftControlsLayout.addLayout(self.textControlsLayout)
@@ -167,11 +182,11 @@ class Ui_MainWindow(object):
         self.marginControlsLayout.setObjectName(u"marginControlsLayout")
         self.rightMarginSpinBox = QSpinBox(self.centralwidget)
         self.rightMarginSpinBox.setObjectName(u"rightMarginSpinBox")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.rightMarginSpinBox.sizePolicy().hasHeightForWidth())
-        self.rightMarginSpinBox.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.rightMarginSpinBox.sizePolicy().hasHeightForWidth())
+        self.rightMarginSpinBox.setSizePolicy(sizePolicy2)
         self.rightMarginSpinBox.setMaximum(99999)
 
         self.marginControlsLayout.addWidget(self.rightMarginSpinBox, 2, 1, 1, 1)
@@ -188,19 +203,19 @@ class Ui_MainWindow(object):
 
         self.leftMarginSpinBox = QSpinBox(self.centralwidget)
         self.leftMarginSpinBox.setObjectName(u"leftMarginSpinBox")
-        sizePolicy1.setHeightForWidth(self.leftMarginSpinBox.sizePolicy().hasHeightForWidth())
-        self.leftMarginSpinBox.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.leftMarginSpinBox.sizePolicy().hasHeightForWidth())
+        self.leftMarginSpinBox.setSizePolicy(sizePolicy2)
         self.leftMarginSpinBox.setMaximum(99999)
 
         self.marginControlsLayout.addWidget(self.leftMarginSpinBox, 1, 1, 1, 1)
 
         self.rightMarginLabel = QLabel(self.centralwidget)
         self.rightMarginLabel.setObjectName(u"rightMarginLabel")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.rightMarginLabel.sizePolicy().hasHeightForWidth())
-        self.rightMarginLabel.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.rightMarginLabel.sizePolicy().hasHeightForWidth())
+        self.rightMarginLabel.setSizePolicy(sizePolicy3)
 
         self.marginControlsLayout.addWidget(self.rightMarginLabel, 2, 0, 1, 1)
 
@@ -328,6 +343,7 @@ class Ui_MainWindow(object):
         self.sizeSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
         self.backgroundColorLabel.setText(QCoreApplication.translate("MainWindow", u"Background color:", None))
         self.textColorlabel.setText(QCoreApplication.translate("MainWindow", u"Text color:", None))
+        self.fontSizeLabel.setText(QCoreApplication.translate("MainWindow", u"Font size:", None))
         self.rightMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
         self.leftMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Left margin:", None))
         self.topMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Top margin:", None))
