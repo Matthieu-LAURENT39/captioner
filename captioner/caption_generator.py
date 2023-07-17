@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from math import ceil
 
 from PIL import Image
-from PySide6.QtCore import QRect, Qt
+from PySide6.QtCore import QRect, Qt, QPoint
 from PySide6.QtGui import (
     QColor,
     QFont,
@@ -15,7 +15,16 @@ from PySide6.QtGui import (
 )
 
 from . import utils
-from .enums import Direction
+from .enums import Direction, HorizontalAlignment, VerticalAlignment
+
+ALIGNMENT_TO_FLAGS: dict[HorizontalAlignment | VerticalAlignment, Qt.AlignmentFlag] = {
+    HorizontalAlignment.LEFT: Qt.AlignmentFlag.AlignLeft,
+    HorizontalAlignment.CENTER: Qt.AlignmentFlag.AlignHCenter,
+    HorizontalAlignment.RIGHT: Qt.AlignmentFlag.AlignRight,
+    VerticalAlignment.TOP: Qt.AlignmentFlag.AlignTop,
+    VerticalAlignment.CENTER: Qt.AlignmentFlag.AlignVCenter,
+    VerticalAlignment.BOTTOM: Qt.AlignmentFlag.AlignBottom,
+}
 
 
 @dataclass
@@ -38,6 +47,9 @@ class CaptionGeneratorConfig:
     background_color: QColor
     text_color: QColor
 
+    text_horizontal_alignment: HorizontalAlignment
+    text_vertical_alignment: VerticalAlignment
+
 
 DEFAULT_CONFIG = CaptionGeneratorConfig(
     base_image=None,
@@ -53,6 +65,8 @@ DEFAULT_CONFIG = CaptionGeneratorConfig(
     markdown_mode=False,
     background_color=QColor(0, 0, 0),
     text_color=QColor(255, 255, 255),
+    text_horizontal_alignment=HorizontalAlignment.LEFT,
+    text_vertical_alignment=VerticalAlignment.TOP,
 )
 
 
@@ -112,7 +126,9 @@ class CaptionGenerator:
         # Draw the text on the image
         painter.drawText(
             rect,
-            Qt.TextFlag.TextWordWrap,
+            Qt.TextFlag.TextWordWrap
+            | ALIGNMENT_TO_FLAGS[self.config.text_horizontal_alignment]
+            | ALIGNMENT_TO_FLAGS[self.config.text_vertical_alignment],
             self.config.caption,
         )
         painter.end()
@@ -131,12 +147,18 @@ class CaptionGenerator:
         # Renders the markdown using a QTextDocument
         doc = QTextDocument()
         doc.setDocumentMargin(0)
+        doc.setDefaultFont(self.config.font)
+        doc.setTextWidth(rect.width())
+
         opt = QTextOption()
+        opt.setAlignment(
+            ALIGNMENT_TO_FLAGS[self.config.text_horizontal_alignment]
+            | ALIGNMENT_TO_FLAGS[self.config.text_vertical_alignment]
+        )
         # Could also be opt.WrapMode.WordWrap
         opt.setWrapMode(opt.WrapMode.WrapAtWordBoundaryOrAnywhere)
-        doc.setDefaultFont(self.config.font)
         doc.setDefaultTextOption(opt)
-        doc.setTextWidth(rect.width())
+
         # This is the only way i found to set text color
         doc.setDefaultStyleSheet(
             f"body {{color: {self.config.text_color.name(QColor.NameFormat.HexRgb)};}}"
@@ -147,6 +169,7 @@ class CaptionGenerator:
         )
         # This is needed, otherwise the style isn't applied
         doc.setHtml(doc.toHtml())
+
         # This is needed for the margin
         painter.translate(rect.topLeft())
         doc.drawContents(painter)

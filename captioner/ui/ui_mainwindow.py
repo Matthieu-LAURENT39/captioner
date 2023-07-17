@@ -115,20 +115,6 @@ class Ui_MainWindow(object):
 
         self.borderControlsLayout.addLayout(self.backgroundColorLayout)
 
-        self.directionComboBox = QComboBox(self.centralwidget)
-        self.directionComboBox.addItem("")
-        self.directionComboBox.addItem("")
-        self.directionComboBox.addItem("")
-        self.directionComboBox.addItem("")
-        self.directionComboBox.setObjectName(u"directionComboBox")
-
-        self.borderControlsLayout.addWidget(self.directionComboBox)
-
-
-        self.leftControlsLayout.addLayout(self.borderControlsLayout)
-
-        self.textControlsLayout = QHBoxLayout()
-        self.textControlsLayout.setObjectName(u"textControlsLayout")
         self.textColorLayout = QFormLayout()
         self.textColorLayout.setObjectName(u"textColorLayout")
         self.textColorLayout.setFormAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
@@ -148,8 +134,13 @@ class Ui_MainWindow(object):
         self.textColorLayout.setWidget(0, QFormLayout.FieldRole, self.textColorPicker)
 
 
-        self.textControlsLayout.addLayout(self.textColorLayout)
+        self.borderControlsLayout.addLayout(self.textColorLayout)
 
+
+        self.leftControlsLayout.addLayout(self.borderControlsLayout)
+
+        self.textControlsLayout = QHBoxLayout()
+        self.textControlsLayout.setObjectName(u"textControlsLayout")
         self.fontComboBox = QFontComboBox(self.centralwidget)
         self.fontComboBox.setObjectName(u"fontComboBox")
         font = QFont()
@@ -237,6 +228,45 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
+        self.alignmentGridLayout = QGridLayout()
+        self.alignmentGridLayout.setObjectName(u"alignmentGridLayout")
+        self.textVAlignmentComboBox = QComboBox(self.centralwidget)
+        self.textVAlignmentComboBox.setObjectName(u"textVAlignmentComboBox")
+
+        self.alignmentGridLayout.addWidget(self.textVAlignmentComboBox, 0, 5, 1, 1)
+
+        self.directionComboBox = QComboBox(self.centralwidget)
+        self.directionComboBox.addItem("")
+        self.directionComboBox.addItem("")
+        self.directionComboBox.addItem("")
+        self.directionComboBox.addItem("")
+        self.directionComboBox.setObjectName(u"directionComboBox")
+
+        self.alignmentGridLayout.addWidget(self.directionComboBox, 0, 1, 1, 1)
+
+        self.textHAlignmentLabel = QLabel(self.centralwidget)
+        self.textHAlignmentLabel.setObjectName(u"textHAlignmentLabel")
+
+        self.alignmentGridLayout.addWidget(self.textHAlignmentLabel, 0, 2, 1, 1)
+
+        self.textHAlignmentComboBox = QComboBox(self.centralwidget)
+        self.textHAlignmentComboBox.setObjectName(u"textHAlignmentComboBox")
+
+        self.alignmentGridLayout.addWidget(self.textHAlignmentComboBox, 0, 3, 1, 1)
+
+        self.textVAlignmentLabel = QLabel(self.centralwidget)
+        self.textVAlignmentLabel.setObjectName(u"textVAlignmentLabel")
+
+        self.alignmentGridLayout.addWidget(self.textVAlignmentLabel, 0, 4, 1, 1)
+
+        self.directionLabel = QLabel(self.centralwidget)
+        self.directionLabel.setObjectName(u"directionLabel")
+
+        self.alignmentGridLayout.addWidget(self.directionLabel, 0, 0, 1, 1)
+
+
+        self.verticalLayout.addLayout(self.alignmentGridLayout)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -294,23 +324,26 @@ class Ui_MainWindow(object):
         self.actionDrawMargins.setText(QCoreApplication.translate("MainWindow", u"Draw margins", None))
         self.imageLabel.setText(QCoreApplication.translate("MainWindow", u"Open an image, or\n"
 "drag-and-drop one here!", None))
-        self.sizeLabel.setText(QCoreApplication.translate("MainWindow", u"Border size", None))
+        self.sizeLabel.setText(QCoreApplication.translate("MainWindow", u"Border size:", None))
         self.sizeSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
-        self.backgroundColorLabel.setText(QCoreApplication.translate("MainWindow", u"Background color", None))
+        self.backgroundColorLabel.setText(QCoreApplication.translate("MainWindow", u"Background color:", None))
+        self.textColorlabel.setText(QCoreApplication.translate("MainWindow", u"Text color:", None))
+        self.rightMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
+        self.leftMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Left margin:", None))
+        self.topMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Top margin:", None))
+        self.leftMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
+        self.rightMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Right margin:", None))
+        self.topMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
+        self.bottomMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Bottom margin:", None))
+        self.bottomMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
         self.directionComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Right", None))
         self.directionComboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Left", None))
         self.directionComboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"Up", None))
         self.directionComboBox.setItemText(3, QCoreApplication.translate("MainWindow", u"Down", None))
 
-        self.textColorlabel.setText(QCoreApplication.translate("MainWindow", u"Text color", None))
-        self.rightMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
-        self.leftMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Left margin", None))
-        self.topMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Top margin", None))
-        self.leftMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
-        self.rightMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Right margin", None))
-        self.topMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
-        self.bottomMarginLabel.setText(QCoreApplication.translate("MainWindow", u"Bottom margin", None))
-        self.bottomMarginSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
+        self.textHAlignmentLabel.setText(QCoreApplication.translate("MainWindow", u"Text horizontal alignment:", None))
+        self.textVAlignmentLabel.setText(QCoreApplication.translate("MainWindow", u"Text vertical alignment:", None))
+        self.directionLabel.setText(QCoreApplication.translate("MainWindow", u"Border side:", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuEdit.setTitle(QCoreApplication.translate("MainWindow", u"Edit", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))

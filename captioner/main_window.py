@@ -14,7 +14,7 @@ from PySide6.QtWidgets import QFileDialog, QMainWindow, QMessageBox
 
 from . import constants, utils
 from .caption_generator import CaptionGenerator, CaptionGeneratorConfig
-from .enums import Direction
+from .enums import Direction, HorizontalAlignment, VerticalAlignment
 from .thread import ImageGeneratorThread
 from .ui.ui_mainwindow import Ui_MainWindow
 
@@ -84,6 +84,14 @@ class CaptionGeneratorConfigUI(CaptionGeneratorConfig):
     def text_color(self) -> QColor:
         return self._window.ui.textColorPicker.selectedColor
 
+    @property
+    def text_horizontal_alignment(self) -> HorizontalAlignment:
+        return self._window.ui.textHAlignmentComboBox.currentData()
+
+    @property
+    def text_vertical_alignment(self) -> VerticalAlignment:
+        return self._window.ui.textVAlignmentComboBox.currentData()
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -97,6 +105,20 @@ class MainWindow(QMainWindow):
         self.base_image = None
         self._current_image = None
         self.setAcceptDrops(True)
+
+        # Setup the comboboxes
+        for h_align in (
+            HorizontalAlignment.LEFT,
+            HorizontalAlignment.CENTER,
+            HorizontalAlignment.RIGHT,
+        ):
+            self.ui.textHAlignmentComboBox.addItem(h_align.value.capitalize(), h_align)
+        for v_align in (
+            VerticalAlignment.TOP,
+            VerticalAlignment.CENTER,
+            VerticalAlignment.BOTTOM,
+        ):
+            self.ui.textVAlignmentComboBox.addItem(v_align.value.capitalize(), v_align)
 
         # Setup the caption generator
         self.generator_config = CaptionGeneratorConfigUI(self)
@@ -119,8 +141,10 @@ class MainWindow(QMainWindow):
             self.ui.textColorPicker.colorChanged,
             self.ui.backgroundColorPicker.colorChanged,
             self.ui.actionMarkdownMode.changed,
-            self.ui.directionComboBox.currentTextChanged,
+            self.ui.directionComboBox.currentIndexChanged,
             self.ui.actionDrawMargins.triggered,
+            self.ui.textHAlignmentComboBox.currentIndexChanged,
+            self.ui.textVAlignmentComboBox.currentIndexChanged,
         ):
             signal.connect(self._value_changed)
 
