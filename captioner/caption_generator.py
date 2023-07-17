@@ -151,9 +151,10 @@ class CaptionGenerator:
         doc.setTextWidth(rect.width())
 
         opt = QTextOption()
+        # Only horizontal alignment is supported by QTextOption
         opt.setAlignment(
             ALIGNMENT_TO_FLAGS[self.config.text_horizontal_alignment]
-            | ALIGNMENT_TO_FLAGS[self.config.text_vertical_alignment]
+            # | ALIGNMENT_TO_FLAGS[self.config.text_vertical_alignment]
         )
         # Could also be opt.WrapMode.WordWrap
         opt.setWrapMode(opt.WrapMode.WrapAtWordBoundaryOrAnywhere)
@@ -170,8 +171,20 @@ class CaptionGenerator:
         # This is needed, otherwise the style isn't applied
         doc.setHtml(doc.toHtml())
 
-        # This is needed for the margin
-        painter.translate(rect.topLeft())
+        #! This is needed for and vertical offset
+        # It's a pretty dirty workaround, so sadly because of that
+        # the result between plain-text mode and markdown mode are
+        # a bit different for non-VerticalAlignment.TOP alignment
+        if self.config.text_vertical_alignment == VerticalAlignment.TOP:
+            vertical_offset = 0
+        elif self.config.text_vertical_alignment == VerticalAlignment.CENTER:
+            vertical_offset = vertical_offset = (
+                rect.height() - doc.size().height()
+            ) / 2
+        else:
+            vertical_offset = rect.height() - doc.size().height()
+        # Translating to rect.topLeft() is needed for the margin to apply
+        painter.translate(rect.topLeft() + QPoint(0, vertical_offset))
         doc.drawContents(painter)
 
         return image
