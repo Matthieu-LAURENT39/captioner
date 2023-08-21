@@ -28,7 +28,7 @@ jobs:
           pip install pyinstaller
       - name: Build with pyinstaller
         run: |
-          python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"
+          poetry run python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"
       - uses: actions/upload-artifact@v3
         with:
           name: Captioner-windows
@@ -53,7 +53,7 @@ jobs:
           pip install pyinstaller
       - name: Build with pyinstaller
         run: |
-          python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"
+          poetry run python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"
       - uses: actions/upload-artifact@v3
         with:
           name: Captioner-linux
