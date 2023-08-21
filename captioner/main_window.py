@@ -149,8 +149,8 @@ class MainWindow(QMainWindow):
             signal.connect(self._value_changed)
 
         # File menu
-        self.ui.actionSave.triggered.connect(self.save_image)
         self.ui.actionOpen.triggered.connect(self.open_image)
+        self.ui.actionSave.triggered.connect(self.save_image)
         self.ui.actionCopyToClipboard.triggered.connect(self.copy_to_clipboard)
         # Edit menu
         self.ui.actionRender.triggered.connect(self.recompute_image)
@@ -160,6 +160,9 @@ class MainWindow(QMainWindow):
             lambda: QDesktopServices.openUrl(constants.SOURCE_CODE_URL)
         )
 
+        # Disable image-related controls
+        self.toggle_image_controls(False)
+
     @property
     def current_image(self):
         return self._current_image
@@ -167,6 +170,9 @@ class MainWindow(QMainWindow):
     @current_image.setter
     def current_image(self, image: Image.Image):
         self._current_image = image
+        # Enable image-related controls
+        self.toggle_image_controls(True)
+        # Display the image
         self._display_image(image)
 
     def _display_image(self, image: Image.Image):
@@ -196,6 +202,11 @@ class MainWindow(QMainWindow):
     def image_generated(self, im: Image.Image):
         """Signal called whenever a new image has been generated"""
         self.current_image = im
+
+    def toggle_image_controls(self, enable: bool):
+        """Enable/disable controls that require an image to be present"""
+        self.ui.actionSave.setEnabled(enable)
+        self.ui.actionCopyToClipboard.setEnabled(enable)
 
     def load_image(self, new_image: Image.Image):
         """Replaces the current loaded image with a new one"""
