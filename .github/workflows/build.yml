@@ -24,8 +24,7 @@ jobs:
       - name: Install requirements
         run: |
           pip install poetry
-          poetry install
-          pip install pyinstaller
+          poetry install --with=build
       - name: Build with pyinstaller
         run: |
           poetry run python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"
@@ -49,8 +48,7 @@ jobs:
       - name: Install requirements
         run: |
           pip install poetry
-          poetry install
-          pip install pyinstaller
+          poetry install --with=build
       - name: Build with pyinstaller
         run: |
           poetry run python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"
