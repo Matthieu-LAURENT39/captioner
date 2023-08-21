@@ -30,18 +30,19 @@ Do note that due to restrictions with github actions, this will download a zip f
 You will need to have the following installed:
 - Qt 6
 - Python 3.11 or above
-- The requirements from the `requirements.txt` file (you can install them with `pip install -r requirements.txt`)
+- Poetry
+- The requirements from the `pyproject.toml` file (install them with `poetry install`)
 - The source code of this repository to be downloaded on your PC
 
-Once this is all setup, simply run the program by starting `run.py`
+Once this is all setup, simply run the program by starting `poetry run python ./run.py`
 
 ### Building it yourself
 You will need to have setup everything from the [Running without compiling](#running-without-compiling) section.  
 In addition, you must also setup the following:
-- PyInstaller (You can install it with `pip install pyinstaller`)
+- PyInstaller (You can install it with `poetry install --with=build`)
 
 Once this is setup, you can use the following command to build the program:
-`python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"`
+`poetry run python -m PyInstaller --onefile --noconsole -n "Captioner" "./run.py"`
 
 
 ## License
