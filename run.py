@@ -1,12 +1,5 @@
-import sys
-
-from PySide6.QtWidgets import QApplication
-from captioner import MainWindow
+#!/usr/bin/python
+from captioner import run
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    window = MainWindow()
-    window.show()
-
-    sys.exit(app.exec())
+    run()
