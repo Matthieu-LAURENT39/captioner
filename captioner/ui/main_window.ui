@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>867</width>
-    <height>448</height>
+    <height>461</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -349,6 +349,7 @@ drag-and-drop one here!</string>
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
+    <addaction name="actionCopyToClipboard"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -437,6 +438,11 @@ drag-and-drop one here!</string>
    </property>
    <property name="text">
     <string>Draw margins</string>
+   </property>
+  </action>
+  <action name="actionCopyToClipboard">
+   <property name="text">
+    <string>Copy to clipboard</string>
    </property>
   </action>
  </widget>

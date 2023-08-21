@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(867, 448)
+        MainWindow.resize(867, 461)
         self.actionOpen = QAction(MainWindow)
         self.actionOpen.setObjectName(u"actionOpen")
         self.actionSave = QAction(MainWindow)
@@ -50,6 +50,8 @@ class Ui_MainWindow(object):
         self.actionDrawMargins = QAction(MainWindow)
         self.actionDrawMargins.setObjectName(u"actionDrawMargins")
         self.actionDrawMargins.setCheckable(True)
+        self.actionCopyToClipboard = QAction(MainWindow)
+        self.actionCopyToClipboard.setObjectName(u"actionCopyToClipboard")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -302,6 +304,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuAbout.menuAction())
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
+        self.menuFile.addAction(self.actionCopyToClipboard)
         self.menuEdit.addAction(self.actionMarkdownMode)
         self.menuEdit.addAction(self.actionDrawMargins)
         self.menuEdit.addSeparator()
@@ -337,6 +340,7 @@ class Ui_MainWindow(object):
         self.actionSourceCode.setText(QCoreApplication.translate("MainWindow", u"Source code", None))
         self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.actionDrawMargins.setText(QCoreApplication.translate("MainWindow", u"Draw margins", None))
+        self.actionCopyToClipboard.setText(QCoreApplication.translate("MainWindow", u"Copy to clipboard", None))
         self.imageLabel.setText(QCoreApplication.translate("MainWindow", u"Open an image, or\n"
 "drag-and-drop one here!", None))
         self.sizeLabel.setText(QCoreApplication.translate("MainWindow", u"Border size:", None))

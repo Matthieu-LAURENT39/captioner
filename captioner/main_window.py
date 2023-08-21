@@ -10,7 +10,7 @@ from PySide6.QtGui import (
     QDragEnterEvent,
     QDropEvent,
 )
-from PySide6.QtWidgets import QFileDialog, QMainWindow, QMessageBox
+from PySide6.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
 
 from . import constants, utils
 from .caption_generator import CaptionGenerator, CaptionGeneratorConfig
@@ -151,6 +151,7 @@ class MainWindow(QMainWindow):
         # File menu
         self.ui.actionSave.triggered.connect(self.save_image)
         self.ui.actionOpen.triggered.connect(self.open_image)
+        self.ui.actionCopyToClipboard.triggered.connect(self.copy_to_clipboard)
         # Edit menu
         self.ui.actionRender.triggered.connect(self.recompute_image)
         # Help menu
@@ -255,6 +256,13 @@ class MainWindow(QMainWindow):
             error_dialog.setText("This file extension is not supported.")
             error_dialog.exec()
             return
+
+    def copy_to_clipboard(self):
+        """Copies the image to the clipboard"""
+        if self.current_image is None:
+            return
+
+        QApplication.clipboard().setImage(utils.pil_to_qimage(self.current_image))
 
     def showAboutDialog(self):
         QMessageBox.about(
