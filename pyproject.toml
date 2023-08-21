@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "captioner"
-version = "1.1.1"
+version = "1.2.0"
 description = "A FOSS GUI program to caption/manip images using plain text or markdown."
 authors = ["Matthieu LAURENT <matthieu.laurent69@proton.me>"]
 license = "GPLv3"
