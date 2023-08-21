@@ -1,0 +1,10 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=Captioner
+Comment=Caption/manip images using plain text or markdown
+GenericName=Image captioning tool
+Exec=captioner %f
+TryExec=captioner
+Categories=Graphics
+Terminal=false
+Type=Application
