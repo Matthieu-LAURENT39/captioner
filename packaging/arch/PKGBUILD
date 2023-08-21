@@ -1,5 +1,5 @@
 pkgname=captioner
-pkgver=1.1.1
+pkgver=1.2.0
 pkgrel=1
 pkgdesc="GUI program to caption/manip images using plain text or markdown."
 arch=('x86_64')
