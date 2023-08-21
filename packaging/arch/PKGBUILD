@@ -11,7 +11,7 @@ makedepends=(python-build python-installer python-wheel)
 optdepends=()
 
 source=("https://github.com/Matthieu-LAURENT39/captioner/archive/refs/tags/v${pkgver}.tar.gz")
-sha1sums=('SKIP')
+sha1sums=('ea2919f1ca551c18f7edb735f5b10b776e40c288')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
