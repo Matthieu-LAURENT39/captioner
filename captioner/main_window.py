@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from PIL import Image, UnidentifiedImageError
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, QSignalBlocker
 from PySide6.QtGui import (
     QColor,
     QFont,
@@ -160,8 +160,14 @@ class MainWindow(QMainWindow):
             lambda: QDesktopServices.openUrl(constants.SOURCE_CODE_URL)
         )
 
+        # Linked margins
+        self.ui.actionLinkMargins.changed.connect(self._linked_margin_changed)
+        self.ui.leftMarginSpinBox.valueChanged.connect(
+            self._left_margin_spinbox_updated
+        )
+
         # Disable image-related controls
-        self.toggle_image_controls(False)
+        self._toggle_image_controls(False)
 
     @property
     def current_image(self):
@@ -171,7 +177,7 @@ class MainWindow(QMainWindow):
     def current_image(self, image: Image.Image):
         self._current_image = image
         # Enable image-related controls
-        self.toggle_image_controls(True)
+        self._toggle_image_controls(True)
         # Display the image
         self._display_image(image)
 
@@ -203,10 +209,34 @@ class MainWindow(QMainWindow):
         """Signal called whenever a new image has been generated"""
         self.current_image = im
 
-    def toggle_image_controls(self, enable: bool):
+    def _toggle_image_controls(self, enable: bool):
         """Enable/disable controls that require an image to be present"""
         self.ui.actionSave.setEnabled(enable)
         self.ui.actionCopyToClipboard.setEnabled(enable)
+
+    def _linked_margin_changed(self):
+        """Toggles the linking of the 4 margins field"""
+        linked = self.ui.actionLinkMargins.isChecked()
+        for spinbox in (
+            self.ui.topMarginSpinBox,
+            self.ui.rightMarginSpinBox,
+            self.ui.bottomMarginSpinBox,
+        ):
+            spinbox.setEnabled(not linked)
+
+    def _left_margin_spinbox_updated(self):
+        """Called when the left margin's value is changed"""
+        # Do nothing special if margins linking isn't enabled
+        if not self.ui.actionLinkMargins.isChecked():
+            return
+
+        value = self.ui.leftMarginSpinBox.value()
+        for spinbox in (
+            self.ui.topMarginSpinBox,
+            self.ui.rightMarginSpinBox,
+            self.ui.bottomMarginSpinBox,
+        ):
+            spinbox.setValue(value)
 
     def load_image(self, new_image: Image.Image):
         """Replaces the current loaded image with a new one"""

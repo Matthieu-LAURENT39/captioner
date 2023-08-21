@@ -357,6 +357,7 @@ drag-and-drop one here!</string>
     </property>
     <addaction name="actionMarkdownMode"/>
     <addaction name="actionDrawMargins"/>
+    <addaction name="actionLinkMargins"/>
     <addaction name="separator"/>
     <addaction name="actionAutoRender"/>
     <addaction name="actionRender"/>
@@ -443,6 +444,14 @@ drag-and-drop one here!</string>
   <action name="actionCopyToClipboard">
    <property name="text">
     <string>Copy to clipboard</string>
+   </property>
+  </action>
+  <action name="actionLinkMargins">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Link margins</string>
    </property>
   </action>
  </widget>
