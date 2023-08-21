@@ -1,4 +1,4 @@
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 """The current version of the program"""
 
 SOURCE_CODE_URL = "https://github.com/Matthieu-LAURENT39/captioner"
