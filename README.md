@@ -19,6 +19,9 @@ If you want a feature to be added, feel free to open [an issue](https://github.c
 
 ## Installing
 
+### AUR
+If you're on Arch Linux, the simplest way to install is to use the AUR packages, either [captioner](https://aur.archlinux.org/packages/captioner) for stable releases or [captioner-git](https://aur.archlinux.org/packages/captioner-git) for latest commit.
+
 ### Regular releases
 Simply download the latest release for you operating system from the [release tab](https://github.com/Matthieu-LAURENT39/captioner/releases)
 
